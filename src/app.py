@@ -37,6 +37,7 @@ app.include_router(routes.router)
 
 # Configure Jinja2 template directory
 templates = Jinja2Templates(directory="src/templates")
+templates.env.cache = {}
 
 # Serve static files (CSS, JS, images, favicon)
 app.mount("/static", StaticFiles(directory="src/static"), name="static")
@@ -56,4 +57,8 @@ async def index(request: Request):
     Returns:
         HTMLResponse: Rendered index.html template.
     """
-    return templates.TemplateResponse("index.html", {"request": request})
+    return templates.TemplateResponse(
+        request=request,
+        name="index.html",
+        context={"request": request}
+    )
